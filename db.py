@@ -9,5 +9,5 @@ db = SQLAlchemy()
 
 def init_db(app=None, db=None):
     if isinstance(app, Flask) and isinstance(db, SQLAlchemy):
-        db.init.app(app)
+        db.init_app(app)
 

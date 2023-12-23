@@ -19,5 +19,7 @@ database_name = os.environ.get("DATABASE_NAME")
 app.config["SQLALCHEMY_DATABASE_URI"] = f"{database_scheme}{database_user}@{database_address}:{database_port}/{database_name}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+init_db(app, db)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='8086', debug=True)
