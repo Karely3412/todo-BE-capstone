@@ -1,5 +1,7 @@
 import uuid
+import marshmallow as ma
 from sqlalchemy.dialects.postgresql import UUID
+
 
 from db import db
 
