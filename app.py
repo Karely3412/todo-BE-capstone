@@ -1,8 +1,14 @@
 from flask import Flask, jsonify, request
 import psycopg2 
 import os
+from flask_marshmallow import Marshmallow
 
 from db import * 
+
+from routes.auth_tokens_routes import auth_token 
+from routes.check_lists_routes import check_list
+from routes.users_routes import user
+from routes.items_routes import item
 
 app = Flask(__name__)
 
@@ -20,6 +26,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"{database_scheme}{database_user}@{data
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 init_db(app, db)
+ma = Marshmallow(app)
 
 def create_tables():
     with app.app_context():

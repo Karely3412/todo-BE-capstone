@@ -20,7 +20,7 @@ class Items(db.Model):
        self.date_created = date_created
        self.date_ended = date_ended
   
-    def get_new_auth_token():
+    def get_new_item():
         return Items("", "", "") 
     
 
