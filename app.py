@@ -5,10 +5,10 @@ from flask_marshmallow import Marshmallow
 
 from db import * 
 
-from routes.auth_tokens_routes import auth_token 
-from routes.check_lists_routes import check_list
 from routes.users_routes import user
-from routes.items_routes import item
+# from routes.auth_tokens_routes import auth_tokens 
+# from routes.check_lists_routes import check_lists
+# from routes.items_routes import items
 
 app = Flask(__name__)
 
@@ -28,10 +28,10 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 init_db(app, db)
 ma = Marshmallow(app)
 
-app.register_blueprint(auth_token)
-app.register_blueprint(check_list)
 app.register_blueprint(user)
-app.register_blueprint(item)
+# app.register_blueprint(auth_tokens)
+# app.register_blueprint(check_lists)
+# app.register_blueprint(items)
 
 def create_tables():
     with app.app_context():
