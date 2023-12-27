@@ -28,6 +28,11 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 init_db(app, db)
 ma = Marshmallow(app)
 
+app.register_blueprint(auth_token)
+app.register_blueprint(check_list)
+app.register_blueprint(user)
+app.register_blueprint(item)
+
 def create_tables():
     with app.app_context():
         print("Creating tables...")
