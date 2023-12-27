@@ -9,12 +9,12 @@ class CheckLists(db.Model):
     __tablename__ = "CheckLists"
 
     check_list_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    name = db.Column(db.String(), nullable=False)
+    check_list_name = db.Column(db.String(), nullable=False)
     date_created = db.Column(db.DateTime(), nullable=False, default=datetime.now)
     date_ended = db.Column(db.DateTime(), default=None)
 
-    def __init__(self, name, last_name, email):
-        self.name = name
+    def __init__(self, check_list_name, last_name, email):
+        self.check_list_name = check_list_name
         self.date_created = last_name
         self.date_ended = email
         
@@ -24,7 +24,7 @@ class CheckLists(db.Model):
 
 class CheckListsSchema(ma.Schema):
     class Meta:
-        fields = ["name", "date_created", "date_ended"]
+        fields = ["check_list_name", "date_created", "date_ended"]
 
 check_list_schema = CheckListsSchema()
 check_lists_schema = CheckListsSchema(many=True)
