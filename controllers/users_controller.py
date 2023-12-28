@@ -47,9 +47,30 @@ def user_get_by_id(req, user_id):
 
 
 def user_update(req, user_id):
+    fields = ['first_name', 'last_name', 'email', 'password', 'phone']
+
+    if validate_uuid4(user_id) == False:
+        return jsonify({"message": "invalid user id"}), 400
+    
+    
     post_data = req.form if req.form else req.json
+
+    for field in fields:
+        if field in post_data and post_data[field] == '':
+            return jsonify({"message": "field(s) cannot be empty"}), 400
+
+    if "email" in post_data:
+        email_query = db.session.query(Users).filter(Users.email == post_data["email"]).first()
+        
+        if email_query:
+            return jsonify({"message": "duplicate email"})
+
     user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
 
+    if not user_query:
+        return jsonify({"message": "user not found"}), 404 
+
+        
     populate_object(user_query, post_data)
 
     db.session.commit()
