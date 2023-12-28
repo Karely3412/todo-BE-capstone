@@ -70,6 +70,10 @@ def user_activity(req, user_id):
 
 def user_delete(req, user_id):
     user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
+
+    if not user_query:
+        return jsonify({"message": "user not found"}), 404
+    
     
     db.session.delete(user_query)
     db.session.commit()
