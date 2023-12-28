@@ -7,17 +7,16 @@ from models.users import Users, user_schema, users_schema
 
 def user_add(req):
     post_data = req.form if req.form else req.json 
-    fields = ['first_name', 'last_name', 'email', 'password', 'phone', 'address']
+    fields = ['first_name', 'last_name', 'email', 'password', 'phone']
     
     for field in fields:
         if field not in post_data:
-            return jsonify({"message": "field(s) required"})
+            return jsonify({"message": "field(s) required"}), 400
     
     for field in fields:
         if post_data[field] == '':
-            return jsonify({"message": "field(s) required"})
+            return jsonify({"message": "field(s) required"}), 400
         
-
     new_user = Users.get_new_user()
 
     populate_object(new_user, post_data)
@@ -36,6 +35,9 @@ def users_get_all(req):
 
 def user_get_by_id(req, user_id):
     user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
+
+    if not user_query:
+        return jsonify({"message": "user does not exists"}), 404
 
     return jsonify({"message": "user found", "user": user_schema.dump(user_query)})
 
