@@ -2,6 +2,7 @@ from flask import jsonify, request
 from db import db
 
 from util.reflecton import populate_object
+from util.validate_uuid4 import validate_uuid4
 from models.users import Users, user_schema, users_schema
 
 
@@ -24,22 +25,25 @@ def user_add(req):
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({"message": "user added successfully", "user": user_schema.dump(new_user) })
+    return jsonify({"message": "user added successfully", "user": user_schema.dump(new_user) }), 201
 
 
 def users_get_all(req):
     users_query = db.session.query(Users).all()
 
-    return jsonify({"message": "users found", "users": users_schema.dump(users_query)})
+    return jsonify({"message": "users found", "users": users_schema.dump(users_query)}), 200
 
 
 def user_get_by_id(req, user_id):
+    if validate_uuid4(user_id) == False:
+        return jsonify({"message": "invalid user id"}), 400
+
     user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
 
     if not user_query:
-        return jsonify({"message": "user does not exists"}), 404
+        return jsonify({"message": "user not found"}), 404    
 
-    return jsonify({"message": "user found", "user": user_schema.dump(user_query)})
+    return jsonify({"message": "user found", "user": user_schema.dump(user_query)}), 200
 
 
 def user_update(req, user_id):
@@ -49,7 +53,7 @@ def user_update(req, user_id):
     populate_object(user_query, post_data)
 
     db.session.commit()
-    return jsonify({"message": "user updated", "user": user_schema.dump(user_query)})
+    return jsonify({"message": "user updated", "user": user_schema.dump(user_query)}), 200
 
 
 def user_activity(req, user_id):
@@ -59,9 +63,9 @@ def user_activity(req, user_id):
     db.session.commit()
 
     if user_query.active:
-        return jsonify({"message": "user activated", "user": user_schema.dump(user_query)})
+        return jsonify({"message": "user activated", "user": user_schema.dump(user_query)}), 200
     else:    
-        return jsonify({"message": "user deactivated", "user": user_schema.dump(user_query)})
+        return jsonify({"message": "user deactivated", "user": user_schema.dump(user_query)}), 200
     
 
 def user_delete(req, user_id):
@@ -69,5 +73,5 @@ def user_delete(req, user_id):
     
     db.session.delete(user_query)
     db.session.commit()
-    return jsonify({"message ": "user successfully deleted"})
+    return jsonify({"message ": "user successfully deleted"}), 200
     
