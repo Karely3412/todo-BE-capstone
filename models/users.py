@@ -32,7 +32,7 @@ class Users(db.Model):
 
 class UsersSchema(ma.Schema):
     class Meta:
-        fields = ["first_name", "last_name", "email", "phone", "address", "active"]
+        fields = ["user_id", "first_name", "last_name", "email", "phone", "address", "active"]
 
 user_schema = UsersSchema()
 users_schema = UsersSchema(many=True)

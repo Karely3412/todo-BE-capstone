@@ -22,3 +22,10 @@ def users_get_all(req):
     users_query = db.session.query(Users).all()
 
     return jsonify({"message ": "users found", "users": users_schema.dump(users_query)})
+
+
+def user_get_by_id(req, user_id):
+    user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
+
+    return jsonify({"message ": "user found", "user": user_schema.dump(user_query)})
+    
