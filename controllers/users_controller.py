@@ -52,12 +52,6 @@ def user_activity(req, user_id):
         return jsonify({"message": "user deactivated", "user": user_schema.dump(user_query)})
     
 
-
-
-    
-
-
-
 def user_delete(req, user_id):
     user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
     
