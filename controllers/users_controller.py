@@ -16,3 +16,9 @@ def user_add(req):
     db.session.commit()
 
     return jsonify({"message": "user added successfully", "user": user_schema.dump(new_user) })
+
+
+def users_get_all(req):
+    users_query = db.session.query(Users).all()
+
+    return jsonify({"message ": "users found", "users": users_schema.dump(users_query)})

@@ -14,3 +14,8 @@ def user_add():
 def users_get_all():
     return users_controller.users_get_all(request)
 
+
+@user.route('/user/activity/<user_id>', methods=['PATCH'])
+def user_activity():
+    return users_controller.user_activity(request)
+
