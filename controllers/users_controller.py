@@ -1,29 +1,18 @@
 from flask import jsonify, request
 from db import db
 
+from util.reflecton import populate_object
 from models.users import Users, user_schema, users_schema
 
 
 def user_add(req):
     post_data = req.form if req.form else req.json 
 
+    new_user = Users.get_new_user()
 
-    post_data.get("first_name")
-    post_data.get("last_name")
-    post_data.get("email")
-    post_data.get("password")
-    post_data.get("phone")
-    post_data.get("address")
+    populate_object(new_user, post_data)
 
-    user_query = db.session.query(Users).filter(Users.user_id == Users.user_id).first()
-
-
-
-    db.session.add()
+    db.session.add(new_user)
     db.session.commit()
-    
 
-
-    # return jsonify({"message": "user added successfully", "user information": user_schema.dump() })
-
-    return user_query
+    return jsonify({"message": "user added successfully", "user": user_schema.dump(new_user) })
