@@ -7,6 +7,16 @@ from models.users import Users, user_schema, users_schema
 
 def user_add(req):
     post_data = req.form if req.form else req.json 
+    fields = ['first_name', 'last_name', 'email', 'password', 'phone', 'address']
+    
+    for field in fields:
+        if field not in post_data:
+            return jsonify({"message": "field(s) required"})
+    
+    for field in fields:
+        if post_data[field] == '':
+            return jsonify({"message": "field(s) required"})
+        
 
     new_user = Users.get_new_user()
 
