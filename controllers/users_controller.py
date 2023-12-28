@@ -57,7 +57,13 @@ def user_update(req, user_id):
 
 
 def user_activity(req, user_id):
+    if validate_uuid4(user_id) == False:
+        return jsonify({"message": "invalid user id"}), 400
+
     user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
+
+    if not user_query:
+        return jsonify({"message": "user not found"}), 404   
 
     user_query.active = not user_query.active
     db.session.commit()
@@ -74,7 +80,7 @@ def user_delete(req, user_id):
     if not user_query:
         return jsonify({"message": "user not found"}), 404
     
-    
+
     db.session.delete(user_query)
     db.session.commit()
     return jsonify({"message ": "user successfully deleted"}), 200
