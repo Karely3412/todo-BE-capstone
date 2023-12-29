@@ -13,13 +13,13 @@ class CheckLists(db.Model):
     date_created = db.Column(db.DateTime(), nullable=False, default=datetime.now)
     date_ended = db.Column(db.DateTime(), default=None)
 
-    def __init__(self, check_list_name, last_name, email):
+    def __init__(self, check_list_name, date_created, date_ended):
         self.check_list_name = check_list_name
-        self.date_created = last_name
-        self.date_ended = email
+        self.date_created = date_created
+        self.date_ended = date_ended
         
     def get_new_check_list():
-        return CheckLists("", "", "")
+        return CheckLists("", datetime.now(),  None)
     
 
 class CheckListsSchema(ma.Schema):
