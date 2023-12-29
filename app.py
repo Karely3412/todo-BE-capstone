@@ -8,7 +8,7 @@ from flask_marshmallow import Marshmallow
 from db import * 
 
 from routes.users_routes import user
-# from routes.auth_tokens_routes import auth_token 
+from routes.auth_tokens_routes import auth_token 
 from routes.check_lists_routes import check_lists
 # from routes.items_routes import item
 
@@ -31,7 +31,7 @@ init_db(app, db)
 ma = Marshmallow(app)
 
 app.register_blueprint(user)
-# app.register_blueprint(auth_token)
+app.register_blueprint(auth_token)
 app.register_blueprint(check_lists)
 # app.register_blueprint(item)
 

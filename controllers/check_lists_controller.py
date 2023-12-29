@@ -4,6 +4,7 @@ from db import db
 from models.check_lists import CheckLists, check_lists_schema, check_list_schema
 from models.users import  Users, user_schema, users_schema
 from util.reflecton import populate_object
+from lib.authenticate import authenticate
 
 
 def check_list_add(req):
@@ -29,7 +30,7 @@ def check_list_get_by_id(req, check_list_id):
 
     return jsonify({"message": "checklist found", "check_list": check_list_schema.dump(check_list_query) })
 
-
+@authenticate
 def check_lists_get_by_user_id(req, user_id):
     check_list_query = db.session.query(CheckLists).join(Users).first()
 

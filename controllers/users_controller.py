@@ -1,4 +1,5 @@
 from flask import jsonify, request
+from flask_bcrypt import generate_password_hash
 from db import db
 
 from util.reflecton import populate_object
@@ -17,10 +18,13 @@ def user_add(req):
     for field in fields:
         if post_data[field] == '':
             return jsonify({"message": "field(s) required"}), 400
-        
-    new_user = Users.get_new_user()
 
+
+    new_user = Users.get_new_user()
     populate_object(new_user, post_data)
+
+    password = new_user.password
+    new_user.password = generate_password_hash(password).decode("utf8")
 
     db.session.add(new_user)
     db.session.commit()
@@ -72,6 +76,9 @@ def user_update(req, user_id):
 
         
     populate_object(user_query, post_data)
+
+    password = user_query.password
+    user_query.password = generate_password_hash(password).decode("utf8")
 
     db.session.commit()
     return jsonify({"message": "user updated", "user": user_schema.dump(user_query)}), 200
