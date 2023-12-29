@@ -4,7 +4,6 @@ import marshmallow as ma
 
 from db import db
 
-
 class AuthTokens(db.Model):
     __tablename__ = "AuthTokens"
 
@@ -12,6 +11,7 @@ class AuthTokens(db.Model):
     user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Users.user_id"), nullable=False)
     expiration = db.Column(db.DateTime(), nullable= False)
 
+    user = db.relationship("Users", back_populates='auth')
 
     def __init__(self, user_id, expiration):
        self.user_id = user_id
@@ -23,6 +23,8 @@ class AuthTokens(db.Model):
 
 class AuthTokensSchema(ma.Schema):
     class Meta:
-        fields = ["auth_token", "user_id", "expiration"]
+        fields = ["auth_token", "user", "expiration"]
+    user = ma.fields.Nested("UsersSchema")
+
 
 auth_token_schema = AuthTokensSchema()

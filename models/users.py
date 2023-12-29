@@ -19,6 +19,7 @@ class Users(db.Model):
     address = db.Column(db.String(), nullable=False)
     active = db.Column(db.Boolean(), nullable=False, default=True)
 
+    auth = db.relationship("AuthTokens", back_populates='user')
     check_lists = db.relationship("CheckLists", back_populates='users', secondary=users_check_list_xref)
 
     def __init__(self, first_name, last_name, email, password, phone, address, active ):

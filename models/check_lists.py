@@ -28,7 +28,9 @@ class CheckLists(db.Model):
 
 class CheckListsSchema(ma.Schema):
     class Meta:
-        fields = ["check_list_id","check_list_name", "date_created", "date_ended"]
+        fields = ["check_list_id", "check_list_name", "date_created", "date_ended", "users"]
+    users = ma.fields.Nested("UsersSchema", many=True)
 
+    
 check_list_schema = CheckListsSchema()
 check_lists_schema = CheckListsSchema(many=True)
