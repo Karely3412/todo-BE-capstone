@@ -5,6 +5,8 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from db import db
 
+from models.users_check_lists_xref import users_check_list_xref
+
 class Users(db.Model):
     __tablename__ = "Users"
 
@@ -16,6 +18,8 @@ class Users(db.Model):
     phone = db.Column(db.String(), nullable=False)
     address = db.Column(db.String(), nullable=False)
     active = db.Column(db.Boolean(), nullable=False, default=True)
+
+    check_lists = db.relationship("CheckLists", back_populates='users', secondary=users_check_list_xref)
 
     def __init__(self, first_name, last_name, email, password, phone, address, active ):
         self.first_name = first_name

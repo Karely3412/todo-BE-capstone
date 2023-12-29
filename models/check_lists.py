@@ -5,6 +5,8 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from db import db
 
+from models.users_check_lists_xref import users_check_list_xref
+
 class CheckLists(db.Model):
     __tablename__ = "CheckLists"
 
@@ -12,6 +14,8 @@ class CheckLists(db.Model):
     check_list_name = db.Column(db.String(), nullable=False)
     date_created = db.Column(db.DateTime(), nullable=False, default=datetime.now)
     date_ended = db.Column(db.DateTime(), default=None)
+
+    users = db.relationship("Users", back_populates='check_lists', secondary=users_check_list_xref)
 
     def __init__(self, check_list_name, date_created, date_ended):
         self.check_list_name = check_list_name
@@ -24,7 +28,7 @@ class CheckLists(db.Model):
 
 class CheckListsSchema(ma.Schema):
     class Meta:
-        fields = ["check_list_name", "date_created", "date_ended"]
+        fields = ["check_list_id","check_list_name", "date_created", "date_ended"]
 
 check_list_schema = CheckListsSchema()
 check_lists_schema = CheckListsSchema(many=True)

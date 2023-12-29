@@ -18,8 +18,31 @@ def check_list_add(req):
 
 
 def check_lists_get_all(req):
-    check_lists_query =db.session.query(CheckLists).all()
+    check_lists_query = db.session.query(CheckLists).all()
 
     return jsonify({"message": "check lists found", "check_lists": check_lists_schema.dump(check_lists_query) })
 
+
+def check_list_get_by_id(req, check_list_id):
+    check_list_query = db.session.query(CheckLists).filter(CheckLists.check_list_id == check_list_id).first()
+
+    return jsonify({"message": "check list found", "check_list": check_list_schema.dump(check_list_query) })
+
+
+def check_list_get_by_user_id(req, user_id):
+    check_list_query = db.session.query(CheckLists).filter(CheckLists.check_list_id == user_id).first()
+
+    return jsonify({"message": "check list found", "check_list": check_list_schema.dump(check_list_query) })
+
+
+def check_list_delete(req, check_list_id):
+    check_list_query = db.session.query(CheckLists).filter(CheckLists.check_list_id == check_list_id).first()
+
+    db.session.delete(check_list_query)
+    db.session.commit()
+    
+
+    return jsonify({"message": "check list deleted"})
+    
+    
 
