@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, request
-import psycopg2 
+from flask_marshmallow import Marshmallow 
+from flask_bcrypt import generate_password_hash
 import os
-from flask_marshmallow import Marshmallow
-# from util.reflection import populate_object
-
 
 from db import * 
+
+from models.users import Users, user_schema
 
 from routes.users_routes import user
 from routes.auth_tokens_routes import auth_token 
@@ -40,6 +40,29 @@ def create_tables():
         print("Creating tables...")
         db.create_all()
         print("Tables created successfully")
+
+        first_name = 'super'
+        last_name = 'admin'
+        email = 'test@test.com'
+        phone = "000-000-0000"
+        address = "1234 Dream Blvd."
+        active = True
+
+        user_query = db.session.query(Users).filter(Users.email == email).first()
+
+        if not user_query:
+            password = input("Enter Super-admin Password: ")
+            new_user = Users(first_name, last_name, email, password, phone, address, active)
+
+            password = new_user.password
+            new_user.password = generate_password_hash(password).decode("utf8")
+
+            db.session.add(new_user)
+            db.session.commit()
+
+
+
+       
 
 create_tables()
 

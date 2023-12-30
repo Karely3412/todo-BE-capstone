@@ -1,6 +1,6 @@
-import uuid
-import marshmallow as ma
 from sqlalchemy.dialects.postgresql import UUID
+import marshmallow as ma
+import uuid
 
 
 from db import db
