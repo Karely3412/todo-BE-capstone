@@ -5,8 +5,9 @@ from db import db
 from util.reflecton import populate_object
 from util.validate_uuid4 import validate_uuid4
 from models.users import Users, user_schema, users_schema
+from lib.authenticate import authenticate
 
-
+@authenticate
 def user_add(req):
     post_data = req.form if req.form else req.json 
     fields = ['first_name', 'last_name', 'email', 'password', 'phone']
@@ -32,12 +33,14 @@ def user_add(req):
     return jsonify({"message": "user added successfully", "user": user_schema.dump(new_user) }), 201
 
 
+@authenticate
 def users_get_all(req):
     users_query = db.session.query(Users).all()
 
     return jsonify({"message": "users found", "users": users_schema.dump(users_query)}), 200
 
 
+@authenticate
 def user_get_by_id(req, user_id):
     if validate_uuid4(user_id) == False:
         return jsonify({"message": "invalid user id"}), 400
@@ -50,6 +53,7 @@ def user_get_by_id(req, user_id):
     return jsonify({"message": "user found", "user": user_schema.dump(user_query)}), 200
 
 
+@authenticate
 def user_update(req, user_id):
     fields = ['first_name', 'last_name', 'email', 'password', 'phone']
 
@@ -84,6 +88,7 @@ def user_update(req, user_id):
     return jsonify({"message": "user updated", "user": user_schema.dump(user_query)}), 200
 
 
+@authenticate
 def user_activity(req, user_id):
     if validate_uuid4(user_id) == False:
         return jsonify({"message": "invalid user id"}), 400
@@ -102,6 +107,7 @@ def user_activity(req, user_id):
         return jsonify({"message": "user deactivated", "user": user_schema.dump(user_query)}), 200
     
 
+@authenticate
 def user_delete(req, user_id):
     user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
 

@@ -23,12 +23,14 @@ def check_list_add(req, auth_info):
     return jsonify({"message": "checklist successfully created", "check_list": check_list_schema.dump(new_check_list)}), 201
 
 
+@authenticate
 def check_lists_get_all(req):
     check_lists_query = db.session.query(CheckLists).all()
 
     return jsonify({"message": "checklists found", "check_lists": check_lists_schema.dump(check_lists_query) }), 200
 
 
+@authenticate
 def check_list_get_by_id(req, check_list_id):
     check_list_query = db.session.query(CheckLists).filter(CheckLists.check_list_id == check_list_id).first()
 
@@ -45,6 +47,7 @@ def check_lists_get_by_user_id(req, user_id):
     return jsonify({"message": "checklist(s) found", "check_lists": check_lists_schema.dump(check_list_query) }), 200
 
 
+@authenticate
 def check_list_delete(req, check_list_id):
     check_list_query = db.session.query(CheckLists).filter(CheckLists.check_list_id == check_list_id).first()
 
