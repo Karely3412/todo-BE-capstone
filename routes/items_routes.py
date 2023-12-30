@@ -11,8 +11,8 @@ def item_add():
 
 
 @items.route('/items', methods=['GET'])
-def item_get_all():
-    return items_controller.item_get_all(request)
+def items_get_all():
+    return items_controller.items_get_all(request)
 
 
 @items.route('/item/<item_id>', methods=['GET'])
@@ -20,7 +20,7 @@ def item_get_by_id(item_id):
     return items_controller.item_get_by_id(request, item_id)
 
 
-@items.route('/item/<check_list_id>', methods=['GET'])
+@items.route('/item/check-list/<check_list_id>', methods=['GET'])
 def item_get_by_check_list_id(check_list_id):
     return items_controller.item_get_by_check_list_id(request, check_list_id)
 
