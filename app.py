@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_marshmallow import Marshmallow 
 from flask_bcrypt import generate_password_hash
+from flask_cors import CORS
 import os
 
 from db import * 
@@ -29,6 +30,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 init_db(app, db)
 ma = Marshmallow(app)
+CORS(app)
 
 app.register_blueprint(user)
 app.register_blueprint(auth_token)
