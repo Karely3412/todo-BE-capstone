@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-# from sqlalchemy.dialects.postgres import 
+
 
 
 __all__ = ('db', 'init_db')
